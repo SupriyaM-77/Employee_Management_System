@@ -1,8 +1,8 @@
 package com.reactive.Employee.service;
 
+import com.reactive.Employee.model.User; // Your custom User model
 import com.reactive.Employee.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,19 +20,17 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<com.reactive.Employee.model.User> optionalUser = userRepository.findByUsername(username);
+        Optional<User> optionalUser = userRepository.findByUsername(username);
 
-        // Handling optional properly
-        com.reactive.Employee.model.User user = optionalUser.orElseThrow(() ->
+        // Handle the case where the user is not found
+        User user = optionalUser.orElseThrow(() ->
                 new UsernameNotFoundException("User not found with username: " + username));
 
-        // Creating a Spring Security user
-        return User.withUsername(user.getUsername())
+        // Map your custom User model to Spring Security's UserDetails
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getUsername())
                 .password(user.getPassword())
-                .roles(user.getRole())  
+                .roles(user.getRole())
                 .build();
-
-
-
     }
 }

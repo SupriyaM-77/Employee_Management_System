@@ -61,7 +61,7 @@ public class AuthController {
         User user = new User();
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword())); // Encrypt password
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
 
         userRepository.save(user);
@@ -80,14 +80,15 @@ public class AuthController {
     private String createJwtToken(User user) {
         Instant now = Instant.now();
 
+        //JWT claims
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("YourApp")
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(jwtExpiration))
                 .subject(user.getUsername())
-                .claim("role", "client")
+                .claim("role", user.getRole())
                 .build();
-
+//JWT encoder
         var encoder = new NimbusJwtEncoder(new ImmutableSecret<>(jwtSecretKey.getBytes()));
         var params = JwtEncoderParameters.from(JwsHeader.with(MacAlgorithm.HS256).build(), claims);
 

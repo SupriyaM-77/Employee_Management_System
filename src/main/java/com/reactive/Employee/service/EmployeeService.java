@@ -14,7 +14,7 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
-    @Autowired  // Ensure Spring injects dependencies
+    @Autowired
     public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }

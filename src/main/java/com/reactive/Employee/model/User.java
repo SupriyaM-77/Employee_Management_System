@@ -6,9 +6,6 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
-import java.util.List;
-
 //import javax.management.relation.Role;
 
 @Data
@@ -23,7 +20,9 @@ public class User {
     private String username;
     private String email;
     private String password;
+    @Getter
     private String role;
-    private Date createdAt;
+    //private Date createdAt;
+
 
 }
